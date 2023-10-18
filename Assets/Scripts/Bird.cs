@@ -14,12 +14,20 @@ public class Bird : MonoBehaviour
     public GameObject bird0;
     public GameObject bird1;
     public GameObject bird2;
+    public GameObject flash;
+
+    //[SerializeField] private AudioClip birdSound;
+    AudioSource source;
+    public AudioClip jumpSound;
+    public AudioClip scoreSound;
     Rigidbody2D rb;
 
 
 
     void Start()
     {
+        //source.clip = scoreSound;
+        //source.Play();
         rb = GetComponent<Rigidbody2D>();
         Pipe.speed = speed;
 
@@ -33,6 +41,8 @@ public class Bird : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             rb.velocity = Vector2.up * jumpSpeed;
+            source.clip = jumpSound;
+            source.Play();
         }
 
         transform.eulerAngles = new Vector3(0, 0, rb.velocity.y * rotateScale);
@@ -93,6 +103,8 @@ public class Bird : MonoBehaviour
         Invoke("ShowMenu",1f); // calls function after 1 second
         //var currentScene = SceneManager.GetActiveScene().name;
         //SceneManager.LoadScene(currentScene);
+        PlayerPrefs.SetInt("score", score);
+        flash.SetActive(true);
     }
 
     void ShowMenu()
@@ -105,5 +117,10 @@ public class Bird : MonoBehaviour
     {
         score++;
         scoreText.text = score.ToString();
+        source.clip = scoreSound;
+        source.Play();
+        //audioSource.clip = birdSound;
+        //audioSource.Play();
+
     }
 }
